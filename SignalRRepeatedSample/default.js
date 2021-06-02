@@ -2,6 +2,7 @@
 var mainHub;
 var signalrStarted;
 
+
 $(document).ready(function () {
     initSignalr();
 });
@@ -12,14 +13,14 @@ function initSignalr() {
     mainHub = $.connection.mainHub;
 
     if (!mainHub.client.dataAvailable) {
-        mainHub.client.dataAvailable = function () {
+        mainHub.client.dataAvailable = function (reqId) {
 
             var pCallback = $.connection.hub.proxies.mainhub._.callbackMap;
             if (pCallback.dataavailable.length) {
                 console.log('handlers count: ' + pCallback.dataavailable[0].eventHandlers.length.toString());
-            }
+            }            
 
-            mainHub.server.getData()
+            mainHub.server.getData(reqId)
                 .done(function (data) {
                     //console.log(data);
                 })
